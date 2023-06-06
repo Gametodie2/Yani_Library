@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${book.title}"></title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon/BookStoreLogo.png">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+	<link rel="stylesheet" th:href="@{/fontawesome/css/all.css}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+<script>
+    function submitForm() {
+        document.getElementById('logoutBtn').click(); // Simulate click on the hidden input
+    }
+</script>
+</head>
+<body>
+	<header>
+	<div class="logo-header">
+        <div class="logo">
+            <img th:src="@{/favicon/BookStoreLogo.png}" alt="Book Catalog">
+        </div>
+        <p>Yani's Library</p>
+        </div>
+        <div class="user">
+            <div class="user-info">
+                <h4 th:text="${user.username}"></h4>
+                <p th:text="${user.role}"></p>
+            </div>
+            <img class="user-avatar" th:src="${user.avatar}"
+                alt="User">
+                <form th:action="@{/logout}" method="post">
+                	<input id="logoutBtn" type="submit"/> <i id="arrowIcon" class="logout fa-solid fa-arrow-right-from-bracket" onclick="submitForm()"></i>
+               		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+               	</form>
+                
+        </div>
+    </header>
+	<div class="book-container flex">
+		<button class="back-button" onclick="window.history.back()">
+		  <i class="fas fa-arrow-left"></i> Back
+		</button>
+		<div class="book-title flex">
+			<h1 th:text="${book.title}"></h1>
+			<form th:if="${(user.getFavoriteBooksSize < user.max_fav) || user.isBookFavorited(book)}" th:action="@{/catalog/{id}/favorite(id=${book.id})}" method="post">
+				<input type="hidden" name="bookId" th:value="${book.id}" />
+				<button type="submit" class="favorite"><i class="" th:classappend="${user.isBookFavorited(book) ? 'fa-solid fa-heart' : 'far fa-heart'}"></i></button>
+            </form>
+		</div>	
+	    <div class="book-details-extended flex">
+	    	<div class="flex full-book-details">
+		    	<div class="book-details-text flex">
+		    		<div>
+					    <p class="detail-title">Details</p>
+					    <p class="details" th:text="${book.isbn}"><span class="isbn-number" th:text="${book.isbn}"></span></p>
+					    <p class="details">
+						    <span>€</span>
+						    <span th:text="${book.priceToString}"></span>
+						</p>
+					</div>
+					<div>
+					    <p class="detail-title">Location(s)</p>
+					    <p th:each="location : ${book.locations}" class="details">
+					    	<span th:text="${location.locationName}"></span> - 
+					    	<span th:text="${location.locationCode1}" class="location-code"></span> 
+					    	<span th:text="${location.locationCode2}" class="location-code"></span>
+					    </p>
+					</div> 
+			    	<div>
+					    <p class="detail-title">Author(s)</p>
+					    <p th:each="author : ${book.authors}" th:text="${author.name}" class="details"></p>
+					</div>
+				</div>  				
+				<div class="book-rating">
+					<p class="detail-title">Rating</p>
+				    <span class="rating" th:text="${book.getLikes}"></span>
+				    <span class="star-rating details">
+				        <i class="fas fa-star" th:classappend="${book.getLikes >= 1 ? 'filled' : ''}"></i>
+				        <i class="fas fa-star" th:classappend="${book.getLikes >= 2 ? 'filled' : ''}"></i>
+				        <i class="fas fa-star" th:classappend="${book.getLikes >= 3 ? 'filled' : ''}"></i>
+				        <i class="fas fa-star" th:classappend="${book.getLikes >= 4 ? 'filled' : ''}"></i>
+				        <i class="fas fa-star" th:classappend="${book.getLikes >= 5 ? 'filled' : ''}"></i>
+				    </span>
+		    	</div>
+	    	</div>
+	    	<div class="book-details-image">
+	    		<img class="book-cover" th:src="${book.image}" alt="Book Cover">
+	    	</div>		
+	    </div>
+	</div>
+</body>
+</html>

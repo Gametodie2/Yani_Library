@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Error Page</title>
+    <meta charset="ISO-8859-1">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/error.css}">
+	<link rel="stylesheet" th:href="@{/fontawesome/css/all.css}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon/BookStoreLogo.png">
+</head>
+<body>
+    <div class="error-container">
+        <h1>Error</h1>
+        <p th:text="${errorMessage}"></p>
+        <a th:href="@{/catalog}" class="create-btn">Return Home</a>
+    </div>
+</body>
+</html>

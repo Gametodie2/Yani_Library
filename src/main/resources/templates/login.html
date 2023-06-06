@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
+	<link rel="stylesheet" th:href="@{/fontawesome/css/all.css}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+	<link rel="shortcut icon" type="image/x-icon" href="/favicon/BookStoreLogo.png">
+  </head>
+  <body onload="document.loginForm.username.focus();">
+    <div id="login-box" class="login-box flex">
+    <h1>Login</h1>
+      <div th:if="${error}" class="error" th:text="${error}"></div>
+
+      <div th:if="${msg}" class="msg" th:text="${msg}"></div>
+
+      <form action="#" th:action="@{/login}" method="post" class="form flex">
+      	<div class="input__container__form__group">
+			<div class="input__container__form__group__input">
+				<input
+				 	name="username"
+				    value=""
+				    type="text"
+				    class="inputField"
+				    autoComplete="off"
+				    required
+				/>
+				<label for="username">Username</label>
+			</div>
+		</div>
+		<div class="input__container__form__group">
+			<div class="input__container__form__group__input">
+				<input
+				 	name="password"
+				    value=""
+				    type="password"
+				    class="inputField"
+				    autoComplete="off"
+				    required
+				/>
+				<label for="password">Password</label>
+			</div>
+		</div>
+		<div class="btn">
+              <button class="login-btn" name="submit" type="submit">Login</button>
+		</div>
+
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+      </form>
+    </div>
+  </body>
+</html>

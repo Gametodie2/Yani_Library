@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Create Book</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/create.css}">
+    <link rel="stylesheet" th:href="@{/fontawesome/css/all.css}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon/BookStoreLogo.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+	    function submitForm() {
+	        document.getElementById('logoutBtn').click(); // Simulate click on the hidden input
+	    }
+	</script>
+</head>
+
+<body onload="document.cerateBookForm.title.focus();">
+    <header>
+        <div class="logo-header">
+            <div class="logo">
+                <img th:src="@{/favicon/BookStoreLogo.png}" alt="Book Catalog">
+            </div>
+            <p>Yani's Library</p>
+        </div>
+        <div class="user">
+            <div class="user-info">
+                <h4 th:text="${user.username}"></h4>
+                <p th:text="${user.role}"></p>
+            </div>
+            <img class="user-avatar" th:src="${user.avatar}" alt="User">
+            <form th:action="@{/logout}" method="post">
+                <input id="logoutBtn" type="submit" /> <i id="arrowIcon"
+                    class="logout fa-solid fa-arrow-right-from-bracket" onclick="submitForm()"></i>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            </form>
+        </div>
+    </header>
+    <div class="createBook-box flex">
+        <button class="back-button" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+        <div th:if="${msg}" class="msg" th:text="${msg}"></div>
+
+        <h3>Create Book</h3>
+        <form th:action="@{/create}" th:object="${book}" method="post" class="form flex">
+            <div class="form-input flex">
+                <div>
+                    <p class="details-title">Details</p>
+                    <div class="input__container__form__group" th:classappend="${#fields.hasErrors('title')} ? 'error' : ''">
+                        <div class="input__container__form__group__input">
+                            <input th:field="*{title}" name="title" value="" type="text" class="inputField" th:classappend="${#fields.hasErrors('title')} ? 'error' : ''"
+                                autoComplete="off" required />
+                            <label for="isbn" class="" th:classappend="${#fields.hasErrors('title')} ? 'error' : ''">
+					            <span th:if="${#fields.hasErrors('title')}" th:errorclass="error" th:errors="*{title}"></span>
+					            <span th:unless="${#fields.hasErrors('title')}">Title</span>
+					        </label>
+                        </div>
+                    </div>
+                    <div class="input__container__form__group" th:classappend="${#fields.hasErrors('price')} ? 'error' : ''">
+                        <div class="input__container__form__group__input">
+                            <input th:field="*{price}" id="price" name="price" type="text" class="inputField" th:classappend="${#fields.hasErrors('price')} ? 'error' : ''"
+                                autoComplete="off" />
+                            <label for="isbn" class="" th:classappend="${#fields.hasErrors('price')} ? 'error' : ''">
+					            <span th:if="${#fields.hasErrors('price')}" th:errorclass="error" th:errors="*{price}"></span>
+					            <span th:unless="${#fields.hasErrors('price')}">Price</span>
+					        </label>
+                        </div>
+                    </div>
+
+                    <div class="input__container__form__group" th:classappend="${#fields.hasErrors('isbn')} ? 'error' : ''">
+					    <div class="input__container__form__group__input">
+					        <input th:field="*{isbn}" name="isbn" value="" type="text" class="inputField" th:classappend="${#fields.hasErrors('isbn')} ? 'error' : ''"
+					            autoComplete="off" required />
+					        <label for="isbn" class="" th:classappend="${#fields.hasErrors('isbn')} ? 'error' : ''">
+					            <span th:if="${#fields.hasErrors('isbn')}" th:errorclass="error" th:errors="*{isbn}"></span>
+					            <span th:unless="${#fields.hasErrors('isbn')}">ISBN</span>
+					        </label>
+					    </div>
+					</div>
+
+
+                    <div class="input__container__form__group" th:classappend="${#fields.hasErrors('image')} ? 'error' : ''">
+                        <div class="input__container__form__group__input">
+                            <input th:field="*{image}" name="image" value="" type="text" class="inputField" th:classappend="${#fields.hasErrors('image')} ? 'error' : ''"
+                                autoComplete="off" required />
+                            <label for="image" class="" th:classappend="${#fields.hasErrors('image')} ? 'error' : ''">
+					            <span th:if="${#fields.hasErrors('image')}" th:errorclass="error" th:errors="*{image}"></span>
+					            <span th:unless="${#fields.hasErrors('image')}">Cover</span>
+					        </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="add-authors flex">
+				    <p class="details-title">Authors <span>(Maximum 3)</span></p>
+				    <select th:field="*{authors[0]}" class="authors" required>
+				        <option th:each="author : ${authorsList}" th:value="${author.id}" th:text="${author.name}"
+				                th:selected="${book.authors[0]?.id == author.id}" />
+				    </select>
+				    <select th:field="*{authors[1]}" class="authors">
+				        <option value="">Select an author</option>
+				        <option th:each="author : ${authorsList}" th:value="${author.id}" th:text="${author.name}"
+				                th:selected="${book.authors[1]?.id == author.id}" />
+				    </select>
+				    <select th:field="*{authors[2]}" class="authors">
+				        <option value="">Select an author</option>
+				        <option th:each="author : ${authorsList}" th:value="${author.id}" th:text="${author.name}"
+				                th:selected="${book.authors[2]?.id == author.id}" />
+				    </select>
+				    
+				    <!-- Add error display for duplicate authors -->
+					<span th:if="${#fields.errors('authors')}" class="error-author">
+						<span th:errors="*{authors}"></span>
+					</span>
+					
+				</div>
+
+                <div class="add-locations flex">
+                    <p class="details-title">Locations <span>(Maximum 3)</span></p>
+                    <div class="location flex">
+                        <div class="input__container__form__group code" th:classappend="${#fields.hasErrors('locations[0].locationCode1')} ? 'error' : ''">
+                            <div class="input__container__form__group__input">
+                                <input th:field="*{locations[0].locationCode1}" name="code1" value="" type="text"
+                                    class="inputField" autoComplete="off" required th:classappend="${#fields.hasErrors('locations[0].locationCode1')} ? 'error' : ''"/>
+                                <label for="" class="" th:classappend="${#fields.hasErrors('locations[0].locationCode1')} ? 'error' : ''">
+						            <span th:if="${#fields.hasErrors('locations[0].locationCode1')}" th:errorclass="error" th:errors="*{locations[0].locationCode1}"></span>
+						            <span th:unless="${#fields.hasErrors('locations[0].locationCode1')}">Code 1</span>
+						        </label>
+                            </div>
+                        </div>
+                        <div class="input__container__form__group code" th:classappend="${#fields.hasErrors('locations[0].locationCode2')} ? 'error' : ''">
+                            <div class="input__container__form__group__input">
+                                <input th:field="*{locations[0].locationCode2}" name="code2" value="" type="text"
+                                    class="inputField" autoComplete="off" required th:classappend="${#fields.hasErrors('locations[0].locationCode2')} ? 'error' : ''"/>
+                                <label for="" class="" th:classappend="${#fields.hasErrors('locations[0].locationCode2')} ? 'error' : ''">
+						            <span th:if="${#fields.hasErrors('locations[0].locationCode2')}" th:errorclass="error" th:errors="*{locations[0].locationCode2}"></span>
+						            <span th:unless="${#fields.hasErrors('locations[0].locationCode2')}">Code 2</span>
+						        </label>
+                            </div>
+                        </div>
+                        <div class="input__container__form__group" th:classappend="${#fields.hasErrors('locations[0].locationName')} ? 'error' : ''">
+                            <div class="input__container__form__group__input">
+                                <input th:field="*{locations[0].locationName}" name="locationName" value="" type="text"
+                                    class="inputField" autoComplete="off" required th:classappend="${#fields.hasErrors('locations[0].locationName')} ? 'error' : ''"/>
+                                <label for="" class="" th:classappend="${#fields.hasErrors('locations[0].locationName')} ? 'error' : ''">
+						            <span th:if="${#fields.hasErrors('locations[0].locationName')}" th:errorclass="error" th:errors="*{locations[0].locationName}"></span>
+						            <span th:unless="${#fields.hasErrors('locations[0].locationName')}">Location Name</span>
+						        </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="location flex">
+                        <div class="input__container__form__group code" th:classappend="${#fields.hasErrors('locations[1].locationCode1')} ? 'error' : ''">
+                            <div class="input__container__form__group__input">
+                                <input th:field="*{locations[1].locationCode1}" name="code1" value="" type="text"
+                                    class="inputField" autoComplete="off" th:classappend="${#fields.hasErrors('locations[1].locationCode1')} ? 'error' : ''"/>
+                                <label for="" class="" th:classappend="${#fields.hasErrors('locations[1].locationCode1')} ? 'error' : ''">
+						            <span th:if="${#fields.hasErrors('locations[1].locationCode1')}" th:errorclass="error" th:errors="*{locations[1].locationCode1}"></span>
+						            <span th:unless="${#fields.hasErrors('locations[1].locationCode1')}">Code 1</span>
+						        </label>
+                            </div>
+                        </div>
+                        <div class="input__container__form__group code" th:classappend="${#fields.hasErrors('locations[1].locationCode2')} ? 'error' : ''">
+                            <div class="input__container__form__group__input">
+                                <input th:field="*{locations[1].locationCode2}" name="code2" value="" type="text"
+                                    class="inputField" autoComplete="off" th:classappend="${#fields.hasErrors('locations[1].locationCode2')} ? 'error' : ''"/>
+                                <label for="" class="" th:classappend="${#fields.hasErrors('locations[1].locationCode2')} ? 'error' : ''">
+						            <span th:if="${#fields.hasErrors('locations[1].locationCode2')}" th:errorclass="error" th:errors="*{locations[1].locationCode2}"></span>
+						            <span th:unless="${#fields.hasErrors('locations[1].locationCode2')}">Code 2</span>
+						        </label>
+                            </div>
+                        </div>
+                        <div class="input__container__form__group" th:classappend="${#fields.hasErrors('locations[1].locationName')} ? 'error' : ''">
+                            <div class="input__container__form__group__input">
+                                <input th:field="*{locations[1].locationName}" name="locationName" value="" type="text"
+                                    class="inputField" autoComplete="off" th:classappend="${#fields.hasErrors('locations[1].locationName')} ? 'error' : ''"/>
+                                <label for="" class="" th:classappend="${#fields.hasErrors('locations[1].locationName')} ? 'error' : ''">
+						            <span th:if="${#fields.hasErrors('locations[1].locationName')}" th:errorclass="error" th:errors="*{locations[1].locationName}"></span>
+						            <span th:unless="${#fields.hasErrors('locations[1].locationName')}">Location Name</span>
+						        </label>
+                            </div>
+                        </div>
+                    </div>
+<div class="location flex">
+                        <div class="input__container__form__group code" th:classappend="${#fields.hasErrors('locations[2].locationCode1')} ? 'error' : ''">
+                            <div class="input__container__form__group__input">
+                                <input th:field="*{locations[2].locationCode1}" name="code1" value="" type="text"
+                                    class="inputField" autoComplete="off" th:classappend="${#fields.hasErrors('locations[2].locationCode1')} ? 'error' : ''"/>
+                                <label for="" class="" th:classappend="${#fields.hasErrors('locations[2].locationCode1')} ? 'error' : ''">
+						            <span th:if="${#fields.hasErrors('locations[2].locationCode1')}" th:errorclass="error" th:errors="*{locations[2].locationCode1}"></span>
+						            <span th:unless="${#fields.hasErrors('locations[2].locationCode1')}">Code 1</span>
+						        </label>
+                            </div>
+                        </div>
+                        <div class="input__container__form__group code" th:classappend="${#fields.hasErrors('locations[2].locationCode2')} ? 'error' : ''">
+                            <div class="input__container__form__group__input">
+                                <input th:field="*{locations[2].locationCode2}" name="code2" value="" type="text"
+                                    class="inputField" autoComplete="off" th:classappend="${#fields.hasErrors('locations[2].locationCode2')} ? 'error' : ''"/>
+                                <label for="" class="" th:classappend="${#fields.hasErrors('locations[2].locationCode2')} ? 'error' : ''">
+						            <span th:if="${#fields.hasErrors('locations[2].locationCode2')}" th:errorclass="error" th:errors="*{locations[2].locationCode2}"></span>
+						            <span th:unless="${#fields.hasErrors('locations[2].locationCode2')}">Code 2</span>
+						        </label>
+                            </div>
+                        </div>
+                        <div class="input__container__form__group" th:classappend="${#fields.hasErrors('locations[2].locationName')} ? 'error' : ''">
+                            <div class="input__container__form__group__input">
+                                <input th:field="*{locations[2].locationName}" name="locationName" value="" type="text"
+                                    class="inputField" autoComplete="off" th:classappend="${#fields.hasErrors('locations[2].locationName')} ? 'error' : ''"/>
+                                <label for="" class="" th:classappend="${#fields.hasErrors('locations[2].locationName')} ? 'error' : ''">
+						            <span th:if="${#fields.hasErrors('locations[2].locationName')}" th:errorclass="error" th:errors="*{locations[2].locationName}"></span>
+						            <span th:unless="${#fields.hasErrors('locations[2].locationName')}">Location Name</span>
+						        </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="btn">
+                <button class="create-btn" name="submit" type="submit">Create</button>
+            </div>
+
+            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+            
+            <script>
+		        const priceInput = document.getElementById('price');
+		        
+		        priceInput.addEventListener('change', function() {
+		            const value = parseFloat(priceInput.value);
+		            
+		            if (isNaN(value)) {
+		                priceInput.value = '0.00';
+		            }
+		        });
+		        
+		        priceInput.addEventListener('blur', function() {
+		            if (priceInput.value === '') {
+		                priceInput.value = '0.00';
+		            }
+		        });
+		    </script>
+        </form>
+    </div>
+    
+</body>
+
+</html>
