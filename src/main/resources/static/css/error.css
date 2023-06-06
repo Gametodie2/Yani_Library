@@ -1,0 +1,43 @@
+@charset "ISO-8859-1";
+
+.create-btn{
+	display: inline-block;
+  padding: 8px 16px;
+  background-color: #006699;
+  color: #fff;
+  border-radius: 7.5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease-in-out;
+  
+  cursor:pointer;
+  align-self: end;
+  justify-self: start;
+  
+  outline:none;
+  border:none;
+  
+  width:100%;
+  height:100%;
+  
+  font-size: 16px;
+  
+  align-self:end;
+  }
+
+.create-btn:hover{
+	background-color: #0077b3;
+}
+
+.error-container {
+    text-align: center;
+    margin-top: 100px;
+}
+
+h1 {
+    font-size: 24px;
+    color: red;
+}
+
+p {
+    font-size: 18px;
+}

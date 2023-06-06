@@ -1,0 +1,155 @@
+@charset "ISO-8859-1";
+
+*{
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+   font-family: 'Poppins', sans-serif;
+
+  font-size: 16px;
+  background-color: #f2f2f2;
+  
+  display: flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  
+  user-select:none;
+  
+  min-height: 100vh;
+}
+
+.flex {
+	display:flex;
+}
+
+.login-box{
+	align-items:center;
+	justify-content:center;
+	flex-direction:column;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.form{
+	flex-direction: column;
+	align-items:center;
+	justify-content:center;
+}
+.btn {
+	width: 250px;
+        height: 52px;
+        margin-bottom: 15px;
+        margin-right: 15px;
+}
+.login-btn{
+	display: inline-block;
+  padding: 8px 16px;
+  background-color: #006699;
+  color: #fff;
+  border-radius: 7.5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease-in-out;
+  
+  cursor:pointer;
+  align-self: end;
+  justify-self: start;
+  
+  outline:none;
+  border:none;
+  
+  width:100%;
+  height:100%;
+  
+  font-size: 16px;
+  }
+
+.login-btn:hover{
+	background-color: #0077b3;
+}
+
+
+.input__container__form__group{
+	width: 250px;
+        height: 52px;
+        padding: 0 5px;
+
+        margin-bottom: 15px;
+        margin-right: 15px;
+        background-color: white;
+
+        border-radius: 7.5px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+}
+
+.input__container__form__group__input{
+	width: 250px;
+	margin-right: 15px;
+
+   	position: relative;
+}
+
+.input__container__form__group__input label{
+	position: absolute;
+            text-align: left;
+
+            pointer-events: none;
+
+            transition: 0.5s;
+
+            font-size: 0.5rem;
+            font-size: 0.8rem;
+
+            top: 5px;
+            left: 15px;
+
+            color: black;
+}
+
+.inputField {
+    width: 100%;
+    border: none;
+    outline: none;
+
+    height: 32px;
+    background: none;
+    padding: 0 8px;
+
+    color:black;
+}
+.inputField:focus~label {
+        font-size: 0.75rem;
+        top: -20px;
+        left: -5px;
+        background:white;
+        padding: 2px 12.5px;
+        border-radius: 4px;
+}
+
+.inputField:valid~label {
+        font-size: 0.75rem;
+        top: -20px;
+        left: -5px;
+        background:white;
+        padding: 2px 12.5px;
+        border-radius: 4px;
+    }
+    
+    .error{
+    margin-bottom:15px;
+    }
+    
+    .msg {
+    	margin-bottom: 15px;
+    }
